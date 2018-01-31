@@ -17,6 +17,8 @@ class Opcio(models.Model):
     consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
     comentari = models.TextField(default=True,null=True)
+    vots = models.IntegerField(default=0)
+    usuari = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     def __str__(self):
     	return self.text
 
