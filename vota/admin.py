@@ -8,7 +8,12 @@ class ChoiceInLine(admin.StackedInline):
 
 class ConsultaAdmin(admin.ModelAdmin):
 	list_display = ('titul', 'user', 'finici', 'ffinal')
+	readonly_fields = ['user']
 	inlines = [ChoiceInLine]
+
+	def save_model(self, request, obj, form, change):
+		obj.user = request.user
+		super(ConsultaAdmin,self).save_model(request,obj,form,change)
 
 	def get_queryset(self, request):
 		qs = super().get_queryset(request)
@@ -17,7 +22,8 @@ class ConsultaAdmin(admin.ModelAdmin):
 		return qs.filter(user=request.user)
 
 class OpcioAdmin(admin.ModelAdmin):
-	list_display = ('consulta', 'text', 'vots')
+	list_display = ('text', 'consulta','propietari','vots_totals')
+	readonly_fields = ('consulta','comentari')
 
 	def get_queryset(self, request):
 		qs = Opcio.objects.all()

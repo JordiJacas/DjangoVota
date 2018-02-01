@@ -17,8 +17,12 @@ class Opcio(models.Model):
     consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
     comentari = models.TextField(default=True,null=True)
-    vots = models.IntegerField(default=0)
-    usuari = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    #vots = models.IntegerField(default=0)
+    def vots_totals(self):
+	    vots = Vot.objects.filter(opcio=self.id).count()
+	    return vots
+    def propietari(self):
+    	return self.consulta.user
     def __str__(self):
     	return self.text
 
@@ -34,7 +38,7 @@ class Invitacio(models.Model):
 class Vot(models.Model):
 	usuari = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
 	consulta = models.ForeignKey(Consulta,on_delete=models.CASCADE)
-	Opcio = models.ForeignKey(Opcio,on_delete=models.CASCADE)
+	opcio = models.ForeignKey(Opcio,on_delete=models.CASCADE)
 	def __str__(self):
 		return self.usuari.__str__() \
 				+ " | " + self.Opcio.consulta.__str__() \
