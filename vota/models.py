@@ -36,10 +36,10 @@ class Invitacio(models.Model):
 	  	 + " | " + self.usuari.__str__()
 
 class Vot(models.Model):
-	usuari = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-	consulta = models.ForeignKey(Consulta,on_delete=models.CASCADE)
+	usuari = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,null=True)
+	consulta = models.ForeignKey(Consulta,on_delete=models.CASCADE,null=True)
 	opcio = models.ForeignKey(Opcio,on_delete=models.CASCADE)
 	def __str__(self):
 		return self.usuari.__str__() \
-				+ " | " + self.Opcio.consulta.__str__() \
-				+ " | " + self.Opcio.__str__()
+				+ " | " + self.consulta.__str__() \
+				+ " | " + self.opcio.__str__() \

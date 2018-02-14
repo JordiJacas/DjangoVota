@@ -1,0 +1,9 @@
+<h1>{{ consulta.titul }}</h1>
+
+<ul>
+{% for choice in consulta.opcio_set.all %}
+    <li>{{ choice.text }} -- {{ choice.vots_totals }} vot{{ choice|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'vota:detail' consulta.id %}">Vote again?</a>
