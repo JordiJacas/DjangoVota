@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.contrib.auth import authenticate,login,logout
 
 from .models import Opcio, Consulta, Vot
 
@@ -36,6 +37,7 @@ def vote(request, question_id):
     else:
         vot = Vot()
         vot.opcio = selected_choice
+        vot.usuari = request.user
         vot.save()
 
 
@@ -46,3 +48,26 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('vota:results', args=(question.id,)))
+
+def logearse(request):
+    return render(request, 'vota/login.html')
+
+def loginUser(request):
+    user = request.POST['user']
+    psswd = request.POST['password']
+    logUser = authenticate(request, username=user, password=psswd)
+
+    if logUser is not None:
+        login(request,logUser)
+        return HttpResponseRedirect('index',request)
+
+    else:
+        return render(request, 'vota/loginError.html',{
+            'error_message': "You didn't login correct.",
+
+            })
+def logoutUser(request):
+    if request.method == "POST":
+        logout(request)
+        
+        return HttpResponseRedirect('home')

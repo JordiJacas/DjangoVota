@@ -1,12 +1,21 @@
-<h1>{{ consulta.titul }}</h1>
+{% extends 'vota/extends.html' %}
+
+{% block content %}
+<br>
+
+<div class=" col-sm-3">
+<h1><u>{{ consulta.titul }}</u></h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'vota:vote' consulta.id %}" method="post">
-{% csrf_token %}
-{% for choice in consulta.opcio_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-    <label for="choice{{ forloop.counter }}">{{ choice.text }}</label><br />
-{% endfor %}
-<input type="submit" value="Vote" />
-</form>
+	<form action="{% url 'vota:vote' consulta.id %}" method="post">
+	{% csrf_token %}
+	{% for choice in consulta.opcio_set.all %}
+		<div class="radio list-group">
+		    <label><input class="list-group-item"type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />{{ choice.text }}</label><br />
+		</div>
+	{% endfor %}
+	<input class="btn btn-primary" type="submit" value="Vote" />
+	</form>
+</div>
+{% endblock %}

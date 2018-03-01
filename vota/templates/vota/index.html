@@ -1,12 +1,31 @@
-{% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'vota/style.css' %}" />
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'vota:detail' question.id %}">{{ question.titul }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
+{% extends 'vota/extends.html' %}
+
+{% block content %}
+<br>
+<div class="row">
+	{% if user.is_authenticated %}
+	<div class="col-md-1 text-center">
+		<h4>{{request.user}}</h4>
+	</div>
+	<div class="col-md-1">
+		<form method="post" action="{%url 'vota:logoutUser' %}">
+		{% csrf_token %}
+			<input class="btn btn-primary" type="submit" value="Logout">
+		</form>
+	</div>
+</div>
 {% endif %}
+
+<h2> <blockquote>Votacions </blockquote></h2>
+{% if latest_question_list %}
+    <div class="list-group">
+    {% for question in latest_question_list %}
+        <a href="{% url 'vota:detail' question.id %}" class="list-group-item">{{ question.titul }}</a>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No vota are available.</p>
+{% endif %}
+
+{% endblock %}
